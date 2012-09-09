@@ -1,0 +1,25 @@
+﻿ロジックのメモ
+
+工夫したいこと
+・Picasaはアルバム単位で管理するので、
+	Pixivタグでフォルダの管理を行う。
+・定期的にバックアップすることを考慮し、
+	既にアップロードされているファイルなど不要な通信を避ける
+	
+データベース設計
+all_image_table
+	@path [String] ファイルのパス[primary]
+
+uploaded_table
+	@pixiv_id [uint] Pixivの画像ID[primary]
+
+１．データベースに登録済みかどうかチェックする
+チェック方法
+	１．all_image_tableで登録されている画像はスキップする
+			登録されていればPixivの画像かどうかチェックしたことになる
+			uploaded_tableへ先に問い合わせると二重に検索するので遅い
+	２．もし、登録されていなければall_image_tableに追記
+	３．もし、uploaded_tableに登録いなければPixivでクロール
+	４．Pixivの画像だったらuploaded_tableに追記する
+
+２．Picasaにアップロードする
