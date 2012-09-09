@@ -9,6 +9,7 @@
 データベース設計
 all_image_table
 	@path [String] ファイルのパス[primary]
+	@is_pixiv [String] Pixivの画像かどうか
 
 uploaded_table
 	@pixiv_id [uint] Pixivの画像ID[primary]
@@ -18,8 +19,8 @@ uploaded_table
 	１．all_image_tableで登録されている画像はスキップする
 			登録されていればPixivの画像かどうかチェックしたことになる
 			uploaded_tableへ先に問い合わせると二重に検索するので遅い
-	２．もし、登録されていなければall_image_tableに追記
-	３．もし、uploaded_tableに登録いなければPixivでクロール
-	４．Pixivの画像だったらuploaded_tableに追記する
+	２．もし、all_image_table.is_pixiv==falseであればPixivでクロール
+	３．Pixivの画像だったらuploaded_tableに追記する
+	４．最後にall_image_tableに追記する。特にis_pixivが大切。
 
 ２．Picasaにアップロードする
